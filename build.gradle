@@ -13,13 +13,17 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 idea {
     project {
         jdkName = '1.8'
         languageLevel = '1.8'
     }
+}
+
+springBoot {
+    mainClass "com.partagames.resizer.webapp.Application"
 }
 
 jar {
@@ -35,9 +39,6 @@ repositories {
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-data-rest'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'com.h2database:h2'
     compile 'org.codehaus.groovy:groovy-all:2.4.4'
     testCompile 'junit:junit:4.11+'
 }
