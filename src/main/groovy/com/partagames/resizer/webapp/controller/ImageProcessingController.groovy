@@ -1,16 +1,16 @@
 package com.partagames.resizer.webapp.controller
 
 import groovy.util.logging.Slf4j
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @Slf4j
-@Controller
+@RestController
 class ImageProcessingController {
 
-    @RequestMapping("/imageprocessing")
-    void processImages() {
-        log.debug("processImages")
+    @RequestMapping("/")
+    public String index() {
+        return "Greetings from Spring Boot!";
     }
 
 }
