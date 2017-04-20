@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 import javax.imageio.ImageIO
+import javax.servlet.http.HttpServletRequest
 import java.awt.image.BufferedImage
 import java.util.stream.Collectors
 
@@ -62,19 +63,23 @@ class FileUploadController {
     }
 
     @PostMapping("/")
-    String handleFileUpload(@RequestParam("file") MultipartFile file,
-                            RedirectAttributes redirectAttributes) {
+    String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
         final Map<String, BufferedImage> imageFiles = new HashMap<>()
         imageFiles.put(file.getOriginalFilename(), ImageIO.read(new ByteArrayInputStream(file.getBytes())))
         final Dimensions[] dimensions = new Dimensions[1]
-        dimensions[0] = new Dimensions(100, 100)
-        def imageFormat = ImageFormat.PNG;
 
-        def resultImages = imageScaleTool.scale(imageFiles, dimensions, imageFormat, ScalingHint.BILINEAR)
+        def width = Integer.parseInt(request.getParameter("width"))
+        def height = Integer.parseInt(request.getParameter("height"))
+
+        dimensions[0] = new Dimensions(width, height)
+        def format = ImageFormat.getByValue(request.getParameter("outputFormat"))
+        def hint = ScalingHint.getByValue(request.getParameter("scalingHint"))
+
+        def resultImages = imageScaleTool.scale(imageFiles, dimensions, format, hint)
         def fileName = resultImages.keySet()[0]
 
-        storageService.store(fileName, imageFormat, resultImages.get(fileName))
+        storageService.store(fileName, format, resultImages.get(fileName))
         redirectAttributes.addFlashAttribute("message",
                 "You successfully scaled " + file.originalFilename + " to " + fileName + "!")
 

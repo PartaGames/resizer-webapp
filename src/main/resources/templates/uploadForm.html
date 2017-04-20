@@ -1,23 +1,86 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
+<script src="dropzone.js"></script>
+<link rel="stylesheet" type="text/css" href="dropzone.css" />
+
+<script>
+    Dropzone.options.dropzoneupload = {
+      autoProcessQueue: false,
+      paramName: "file", // The name that will be used to transfer the file
+      maxFilesize: 2, // MB
+      addRemoveLinks: true,
+      init: function() {
+        var submitButton = document.querySelector("#submit-all")
+            myDropzone = this; // closure
+
+        submitButton.addEventListener("click", function() {
+            document.getElementById("width").value = document.getElementById("w").value;
+            document.getElementById("height").value = document.getElementById("h").value;
+            document.getElementById("outputFormat").value = document.getElementById("output-format").value;
+            document.getElementById("scalingHint").value = document.getElementById("scaling-hint").value;
+            myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+        });
+
+      }
+    };
+</script>
+
+Target dimensions <br/>
+Width: <input type="text" id="w" name="width" value="1280"/>
+Height: <input type="text" id="h" name="height" value="720" />
+<br/>
+
+Output format:
+<select id="output-format">
+    <option value="png">PNG</option>
+    <option value="jpg">JPG</option>
+    <option value="gif">GIF</option>
+</select>
+<br/>
+
+Scaling hint:
+<select id="scaling-hint">
+    <option value="b">Bilinear</option>
+    <option value="n">Nearest</option>
+</select>
+<br/>
+
+<div id="dropzone">
+    <form action="/" class="dropzone" id="dropzoneupload">
+        <input type="hidden" id="width" name="width" />
+        <input type="hidden" id="height" name="height" />
+        <input type="hidden" id="outputFormat" name="outputFormat"/>
+        <input type="hidden" id="scalingHint" name="scalingHint" />
+    </form>
+</div>
+
+<button id="submit-all">Submit all files</button>
+
 <div th:if="${message}">
     <h2 th:text="${message}"/>
 </div>
-
+<!--
 <div>
     <form method="POST" enctype="multipart/form-data" action="/">
         <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            <tr>
+                <td>File to upload:</td>
+                <td><input type="file" name="file"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Upload"/></td>
+            </tr>
         </table>
     </form>
 </div>
+-->
 
 <div>
     <ul>
         <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${file}" />
+            <a th:href="${file}" th:text="${file}"/>
         </li>
     </ul>
 </div>
