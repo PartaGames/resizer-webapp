@@ -24,6 +24,7 @@ idea {
 
 springBoot {
     mainClass "com.partagames.resizer.webapp.Application"
+    executable = true
 }
 
 jar {
@@ -40,6 +41,7 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
     compile 'org.codehaus.groovy:groovy-all:2.5+'
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
