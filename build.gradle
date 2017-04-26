@@ -15,10 +15,13 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 idea {
     project {
         jdkName = '1.8'
-        languageLevel = '1.8'
+        languageLevel = '1.7'
     }
 }
 
